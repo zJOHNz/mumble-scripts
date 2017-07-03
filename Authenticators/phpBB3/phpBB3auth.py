@@ -828,8 +828,11 @@ def phpbb_check_hash(password, hash):
     itoa64 = './0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'
     if len(hash) == 34:
         return _hash_crypt_private(password, hash, itoa64) == hash
-
-    return md5(password).hexdigest() == hash
+    #for phpBB 3.2
+    #install pip install passlib
+    from passlib.hash import bcrypt
+    r = bcrypt.using(rounds=10).using(ident="2y").verify(password, hash)
+    return r
 
 #
 #--- Start of program
